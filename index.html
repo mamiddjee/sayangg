@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web bucin kotak 💖✨</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'arial', sans-serif;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #111, #000);
+    animation: bggalaxy 60s linear infinite;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@keyframes bggalaxy {
+    0% { background-position: 0 0; }
+    100% { background-position: 10000px 10000px; }
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    height: 80%;
+    background: rgba(255, 192, 203, 0.9); /* soft pink kotak */
+    border-radius: 25px;
+    box-shadow: 0 0 30px rgba(255,0,150,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+}
+
+.slider {
+    width: 100%;
+    height: 60%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.slider img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0; left: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    border-radius: 15px;
+}
+
+.slider img.active {
+    opacity: 1;
+}
+
+.caption {
+    margin-top: 15px;
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5em;
+    color: #ff69b4;
+    text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+    white-space: pre-line;
+}
+
+.cursor {
+    display: inline-block;
+    width: 0.3em;
+    background-color: #ff69b4;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%,50%,100%{opacity:1}
+    25%,75%{opacity:0}
+}
+
+.heart, .floating, .confetti {
+    position: absolute;
+    pointer-events: none;
+}
+
+.heart {
+    font-size: 1.5em;
+    color: #ff69b4;
+    animation: fall linear infinite;
+    filter: drop-shadow(0 0 10px #ff69b4);
+}
+
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity:1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+}
+
+.floating {
+    font-size: 1em;
+    opacity: 0.5;
+    color: #ff69b4;
+    animation: floatup 8s infinite linear;
+}
+
+@keyframes floatup {
+    0% { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-50px) rotate(360deg); }
+}
+
+.confetti {
+    font-size: 20px;
+    animation: confettifall linear forwards;
+}
+
+@keyframes confettifall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity:1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity:0; }
+}
+
+button#musicBtn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: #ff69b4;
+    color: white;
+    box-shadow: 0 0 15px #ff69b4;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="slider">
+        <img src="1.jpg" class="active">
+        <img src="2.jpg">
+        <img src="3.jpg">
+        <img src="4.jpg">
+        <img src="5.jpg">
+    </div>
+    <div class="caption" id="caption"></div>
+    <button id="musicBtn">▶️ Play Musik</button>
+</div>
+
+<audio id="bgMusic" loop src="lagu.mp3"></audio>
+
+<script>
+// Slider + Caption
+const slides = document.querySelectorAll('.slider img');
+const captionEl = document.getElementById('caption');
+const captions = [
+    "denganmu saja akuu sudah sangat bersyukur,",
+    "lantas untuk apa aku haru tertarik dengan yang lain,",
+    "tidak ada yang lebih indah dari kamu dan cerita kita,",
+    "i always love you asya 🤍🤍🫂🫂🫂"
+];
+let current = 0;
+
+function typeText(text, callback){
+    captionEl.innerHTML = '';
+    let i = 0;
+    const cursor = document.createElement('span');
+    cursor.classList.add('cursor');
+    captionEl.appendChild(cursor);
+
+    const interval = setInterval(() => {
+        const span = document.createElement('span');
+        span.textContent = text[i];
+        span.style.color = '#ff69b4';
+        captionEl.insertBefore(span, cursor);
+        i++;
+        if(i >= text.length){
+            clearInterval(interval);
+            if(callback) callback();
+        }
+    },50);
+}
+
+function nextSlide(){
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+    typeText(captions[current]);
+}
+
+typeText(captions[0]);
+setInterval(nextSlide, 5000);
+
+// Hati jatuh
+function createHeart(){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = Math.random() < 0.5 ? '❤️' : '🤍';
+    heart.style.left = Math.random()*100+'vw';
+    heart.style.fontSize = (10 + Math.random()*20)+'px';
+    heart.style.animationDuration = (3 + Math.random()*4)+'s';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),8000);
+}
+setInterval(createHeart,300);
+
+// Floating
+function createFloating(){
+    const float = document.createElement('div');
+    float.classList.add('floating');
+    float.textContent = Math.random()<0.5?'❤️':'🤍';
+    float.style.left = Math.random()*100+'vw';
+    float.style.fontSize = (8 + Math.random()*15)+'px';
+    document.body.appendChild(float);
+    setTimeout(()=>float.remove(),8000);
+}
+setInterval(createFloating,500);
+
+// Confetti
+function createConfetti(){
+    const conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.textContent = '❤️';
+    conf.style.left = Math.random()*100+'vw';
+    conf.style.fontSize = (15 + Math.random()*25)+'px';
+    conf.style.animationDuration = (3 + Math.random()*4)+'s';
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),6000);
+}
+setInterval(createConfetti,2500);
+
+// Musik play/pause + fade
+const musicBtn = document.getElementById('musicBtn');
+const bgMusic = document.getElementById('bgMusic');
+let musicPlaying = false;
+
+function fadeAudio(audio, targetVolume, duration){
+    const step = (targetVolume - audio.volume) / (duration / 50);
+    let count = 0;
+    const fade = setInterval(() => {
+        audio.volume += step;
+        count += 50;
+        if(count >= duration){
+            audio.volume = targetVolume;
+            clearInterval(fade);
+        }
+    }, 50);
+}
+
+musicBtn.addEventListener('click', ()=>{
+    if(!musicPlaying){
+        bgMusic.volume = 0;
+        bgMusic.play();
+        fadeAudio(bgMusic, 1, 2000); // fade in 2 detik
+        musicBtn.textContent = '⏸️ Pause Musik';
+    } else {
+        fadeAudio(bgMusic, 0, 2000);
+        setTimeout(()=>bgMusic.pause(), 2000);
+        musicBtn.textContent = '▶️ Play Musik';
+    }
+    musicPlaying = !musicPlaying;
+});
+</script>
+
+</body>
+</html>
